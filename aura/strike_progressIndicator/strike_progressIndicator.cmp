@@ -1,0 +1,38 @@
+<!--
+  The Progress Indicator should be placed into your component markup with <c:strike_progressItem /> components as its body.
+-->
+<aura:component description="A progress indicator component communicates to the user the progress of a particular process." access="global">
+
+    <!-- optional attributes -->
+    <aura:attribute name="theme" type="String" description="An optional theme to apply to the progress indicator. The only supported values are 'default' and 'shade'." />
+    <aura:attribute name="currentStepNumber" type="Integer" default="1" description="The current step in the progress (starting from 1)." />
+    <aura:attribute name="allowClickStepNavigation" type="Boolean" default="true" description="If true the user can jump between steps by clicking on the progress items." />
+
+    <!-- private attributes -->
+    <aura:attribute name="progressClass" type="String" access="private" />
+    <aura:attribute name="progressPercent" type="Decimal" default="0" access="private" />
+    <aura:attribute name="progressItems" type="Aura.Component[]" access="private" />
+
+    <!-- component event handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <aura:handler name="change" value="{!v.currentStepNumber}" action="{!c.onCurrentStepNumberChange}" />
+
+    <aura:handler name="strike_evt_notifyParent" event="c:strike_evt" includeFacets="true" action="{!c.handleNotifyParent}" />
+
+    <!-- methods -->
+    <aura:method name="nextStep" action="{!c.nextStep}" />
+    <aura:method name="previousStep" action="{!c.prevStep}" />
+
+    <!-- body -->
+    <div class="{!v.progressClass}">
+        <ol class="slds-progress__list">
+            {!v.progressItems}
+        </ol>
+        <div class="slds-progress-bar">
+            <span class="slds-progress-bar__value" style="{!'width:' + v.progressPercent + '%;'}">
+                <span class="slds-assistive-text">{!'Progress: ' + v.progressPercent + '%;'}</span>
+            </span>
+        </div>
+    </div>
+
+</aura:component>

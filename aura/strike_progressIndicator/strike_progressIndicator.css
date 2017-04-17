@@ -1,0 +1,8 @@
+/*
+ * Correct an issue where a progress indicator that starts with no icons will
+ * have its size increased when the first icon is added.
+ */
+
+.THIS {
+    height: 1.5rem;
+}

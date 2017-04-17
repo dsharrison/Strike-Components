@@ -1,0 +1,59 @@
+<!--
+  Progress Item is only supported as a direct child of Progress Indicator.
+-->
+<aura:component description="A particular step for a progress indicator." access="global">
+
+    <!-- required attributes -->
+    <aura:attribute name="alternativeText" type="String" required="true" description="The assistive text for this step." access="global" />
+
+    <!-- optional attributes -->
+    <aura:attribute name="tooltipText" type="String" description="Text to show as a tooltip when the user hovers over this progress item." access="global" />
+    <aura:attribute name="stepNumber" type="Integer" description="The number of this step in the overall progress (starting from 1)." access="global" />
+    <aura:attribute name="hasError" type="Boolean" default="false" description="True if the current step has an error." access="global" />
+    <aura:attribute name="currentProgressStepNumber" type="Integer" description="The current step of the overall progress." access="global" />
+
+    <!-- private attributes -->
+    <aura:attribute name="isActive" type="Boolean" default="false" access="private" />
+    <aura:attribute name="isComplete" type="Boolean" default="false" access="private" />
+    <aura:attribute name="progressItemClass" type="String" access="private" />
+    <aura:attribute name="iconName" type="String" access="private" />
+    <aura:attribute name="labelText" type="String" access="private" />
+
+    <!-- component event handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <aura:handler name="change" value="{!v.stepNumber}" action="{!c.onStepNumberChange}" />
+    <aura:handler name="change" value="{!v.currentProgressStepNumber}" action="{!c.onStepNumberChange}" />
+
+    <!-- event registration -->
+    <aura:registerEvent name="strike_evt_notifyParent" type="c:strike_evt" description="Fired when an a progress item is clicked." />
+
+    <!-- body -->
+    <aura:if isTrue="{!v.tooltipText != null}">
+        <li class="{!v.progressItemClass}">
+            <c:strike_tooltip text="{!v.tooltipText}">
+                <aura:if isTrue="{!v.iconName != null}">
+                    <lightning:buttonIcon iconName="{!v.iconName}" alternativeText="{!v.labelText}" class="slds-progress__marker slds-progress__marker--icon" onclick="{!c.handleStepClick}" />
+                    <aura:set attribute="else">
+                        <button class="slds-button slds-progress__marker" title="{!v.labelText}" onclick="{!c.handleStepClick}">
+                            <span class="slds-assistive-text">{!v.labelText}</span>
+                        </button>
+                    </aura:set>
+                </aura:if>
+            </c:strike_tooltip>
+        </li>
+
+        <aura:set attribute="else">
+            <li class="{!v.progressItemClass}">
+                <aura:if isTrue="{!v.iconName != null}">
+                    <lightning:buttonIcon iconName="{!v.iconName}" alternativeText="{!v.labelText}" class="slds-progress__marker slds-progress__marker--icon" onclick="{!c.handleStepClick}" />
+                    <aura:set attribute="else">
+                        <button class="slds-button slds-progress__marker" title="{!v.labelText}" onclick="{!c.handleStepClick}">
+                            <span class="slds-assistive-text">{!v.labelText}</span>
+                        </button>
+                    </aura:set>
+                </aura:if>
+            </li>
+        </aura:set>
+    </aura:if>
+
+</aura:component>

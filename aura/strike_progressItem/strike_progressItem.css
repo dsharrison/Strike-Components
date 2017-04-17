@@ -1,0 +1,9 @@
+/*
+ * Correct an issue where a progress item that is not an icon and not the direct
+ * decendant of an <li> has a bit of margin added to the top causing it to appear
+ * out of line.
+ */
+
+.THIS>*>.slds-progress__marker:not(.slds-progress__marker--icon) {
+    margin-top: -0.1em;
+}
