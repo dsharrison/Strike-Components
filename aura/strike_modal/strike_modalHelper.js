@@ -37,7 +37,7 @@
         var afterEventAttribute = showModal ? 'v.fadeIn' : 'v.showingModal'
 
         var transitionListener = $A.getCallback(function(e){
-            var el = e.srcElement;
+            var el = e.target;
 
             if(!$A.util.isEmpty(el) && el.id == params.targetEl){
                 if(!showModal){
