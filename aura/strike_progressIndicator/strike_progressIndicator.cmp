@@ -1,0 +1,81 @@
+<aura:component>
+
+		<!-- PUBLIC USER DEFINED ATTRIBUTES -->
+		<aura:attribute name="stageNames" type="String[]" default="['One','Two','Three','Four','Five']" description="The name of each progress step" required="true" />
+		<aura:attribute name="tooltips" type="String[]" description="Tooltip help text for each progress step. If blank no tooltips will show. To provide help text for only some steps set empty strings for the others." required="false" />
+		<aura:attribute name="activeStepIndex" type="Integer" default="0" description="Used to set the starting position of the active chevron" />
+		<aura:attribute name="advanceButton" type="Boolean" default="{!false}" description="Used to override default button" />
+		<aura:attribute name="disableBackwardNavOnComplete" type="Boolean" default="{!false}" description="Restricts backward navigation to stages marked as complete" />
+		<aura:attribute name="disableForwardNavOnIncomplete" type="Boolean" default="{!false}" description="Restricts forward navigation to stages marked as incomplete" />
+		<aura:attribute name="disableAllNav" type="Boolean" default="{!false}" description="Restricts all navigation" />
+		<aura:attribute name="error" type="Boolean" default="{!false}" description="A boolean value that is used to toggle the error state" />
+		<aura:attribute name="processComplete" type="Boolean" default="{!false}" />
+
+		<!-- INTERNAL ATTRIBUTES -->
+		<aura:attribute name="progressItems" type="Object[]" access="private" />
+		<aura:attribute name="percentComplete" type="Decimal" access="private" />
+		<aura:attribute name="currentItemIndex" type="Integer" access="private" />
+		<aura:attribute name="initialized" type="Boolean" default="{!false}" access="private" />
+
+		<!-- HANDLERS AND EVENTS-->
+		<aura:handler name="init" value="{!this}" action="{!c.init}" />
+		<aura:handler name="change" value="{!v.error}" action="{!c.handleErrorState}" />
+		<aura:registerEvent name="strike_evt_chevron" type="c:strike_evt" />
+
+		<!-- PUBLIC METHODS -->
+		<aura:method name="next" action="{!c.moveToNextStep}" />
+		<aura:method name="previous" action="{!c.moveToPreviousStep}" />
+
+		<div class="slds-progress">
+				<ol class="slds-progress__list">
+						<aura:iteration items="{!v.progressItems}" var="progressItem" indexVar="idx">
+								<li class="{!'slds-progress__item ' + progressItem.class}" onclick="{!c.handleProgressItemClick}" id="{!idx}">
+										<aura:if isTrue="{!progressItem.showTooltip}">
+												<c:strike_tooltip placement="auto top" text="{!progressItem.tooltipText}">
+														<aura:if isTrue="{!progressItem.status == 'incomplete'}">
+																<lightning:button variant="base" class="slds-progress__marker" disabled="{!progressItem.disabled}">
+																		<span class="slds-assistive-text">{!progressItem.name}</span>
+																</lightning:button>
+														</aura:if>
+														<aura:if isTrue="{!progressItem.status == 'complete'}">
+																<lightning:buttonIcon iconName="utility:success" class="slds-progress__marker slds-progress__marker_icon" title="{!progressItem.name}" alternativeText="{!v.progressItem.name}" disabled="{!progressItem.disabled}" />
+														</aura:if>
+														<aura:if isTrue="{!progressItem.status == 'error'}">
+																<lightning:buttonIcon iconName="utility:warning" class="slds-progress__marker slds-progress__marker_icon" title="{!progressItem.name}" alternativeText="{!v.progressItem.name}" disabled="{!progressItem.disabled}" />
+														</aura:if>
+												</c:strike_tooltip>
+												<aura:set attribute="else">
+														<aura:if isTrue="{!progressItem.status == 'incomplete'}">
+																<lightning:button variant="base" class="slds-progress__marker" disabled="{!progressItem.disabled}">
+																		<span class="slds-assistive-text">{!progressItem.name}</span>
+																</lightning:button>
+														</aura:if>
+														<aura:if isTrue="{!progressItem.status == 'complete'}">
+																<lightning:buttonIcon iconName="utility:success" class="slds-progress__marker slds-progress__marker_icon" title="{!progressItem.name}" alternativeText="{!v.progressItem.name}" disabled="{!progressItem.disabled}" />
+														</aura:if>
+														<aura:if isTrue="{!progressItem.status == 'error'}">
+																<lightning:buttonIcon iconName="utility:warning" class="slds-progress__marker slds-progress__marker_icon" title="{!progressItem.name}" alternativeText="{!v.progressItem.name}" disabled="{!progressItem.disabled}" />
+														</aura:if>
+												</aura:set>
+										</aura:if>
+								</li>
+						</aura:iteration>
+				</ol>
+				<div class="slds-progress-bar slds-progress-bar_x-small" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{!v.percentComplete}" role="progressbar">
+						<span class="slds-progress-bar__value" style="{!'width: ' + v.percentComplete + '%;'}">
+        <span class="slds-assistive-text">Progress: {!v.percentComplete}%</span>
+						</span>
+				</div>
+		</div>
+
+</aura:component>
+<!--
+Copyright 2017 Appiphony, LLC
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
