@@ -58,7 +58,7 @@
         event.preventDefault();
         event.stopPropagation();
         
-        if (event.srcElement.tagName == 'use' || event.srcElement.tagName == 'svg') {
+        if (event.target.tagName == 'use' || event.target.tagName == 'svg') {
             return;
         }
         

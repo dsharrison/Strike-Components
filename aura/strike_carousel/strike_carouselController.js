@@ -27,7 +27,7 @@
 		helper.updateDots(component, event, helper);
 	},
 	handleClickDot: function(component, event, helper) {
-		var page = parseInt(event.srcElement.dataset.page);
+		var page = parseInt(event.target.dataset.page);
 		helper.scrollToPage(component, event, helper, page);
 	},
 	handleClickPrevious: function(component, event, helper) {
