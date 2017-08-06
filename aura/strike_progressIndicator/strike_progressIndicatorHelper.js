@@ -57,11 +57,18 @@
 				this.updatePercentComplete(component);
 		},
 		updatePercentComplete: function (component) {
-				var progressItems = component.get('v.progressItems');
-				var currentItemIndex = component.get('v.currentItemIndex');
 
-				var percentComplete = (currentItemIndex) / (progressItems.length - 1);
-				percentComplete = percentComplete * 100;
-				component.set('v.percentComplete', percentComplete);
+				var isComplete = component.get('v.progressComplete');
+				if(isComplete) {
+					component.set('v.percentComplete', 100);
+				}
+				else {
+					var progressItems = component.get('v.progressItems');
+					var currentItemIndex = component.get('v.currentItemIndex');
+
+					var percentComplete = (currentItemIndex) / (progressItems.length - 1);
+					percentComplete = percentComplete * 100;
+					component.set('v.percentComplete', percentComplete);
+				}
 		}
 })
