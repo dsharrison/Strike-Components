@@ -44,7 +44,7 @@
 		var clickIndex = event.currentTarget.id;
 		var progressItem = component.get('v.progressItems[' + clickIndex + ']');
 		if(!progressItem.disabled) {
-			component.set('v.currentItemIndex', clickIndex);
+			component.set('v.currentItemIndex', parseInt(clickIndex, 10));
 			helper.buildState(component);
 		}
 	}
