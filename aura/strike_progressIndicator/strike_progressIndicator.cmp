@@ -11,7 +11,7 @@ License: BSD 2-Clause License
 	<!-- PUBLIC USER DEFINED ATTRIBUTES -->
 	<aura:attribute name="stageNames" type="String[]" default="['One','Two','Three','Four','Five']" description="The name of each progress step" required="true" />
 	<aura:attribute name="tooltips" type="String[]" description="Tooltip help text for each progress step. If blank no tooltips will show. To provide help text for only some steps set empty strings for the others." required="false" />
-	<aura:attribute name="currentItemIndex" type="Integer" default="0" description="Used to set the starting position of the active chevron" />
+	<aura:attribute name="currentItemIndex" type="Integer" default="0" description="Used to set the starting position of the active step" />
 	<aura:attribute name="advanceButton" type="Boolean" default="false" description="Used to override default button" />
 	<aura:attribute name="disableBackwardNavOnComplete" type="Boolean" default="false" description="Restricts backward navigation to stages marked as complete" />
 	<aura:attribute name="disableForwardNavOnIncomplete" type="Boolean" default="false" description="Restricts forward navigation to stages marked as incomplete" />
@@ -22,13 +22,11 @@ License: BSD 2-Clause License
 	<!-- INTERNAL ATTRIBUTES -->
 	<aura:attribute name="progressItems" type="Object[]" access="private" />
 	<aura:attribute name="percentComplete" type="Decimal" access="private" />
-	<aura:attribute name="initialized" type="Boolean" default="false" access="private" />
 
 	<!-- HANDLERS AND EVENTS-->
 	<aura:handler name="init" value="{!this}" action="{!c.init}" />
 	<aura:handler name="change" value="{!v.error}" action="{!c.handleErrorState}" />
 	<aura:handler name="change" value="{!v.currentItemIndex}" action="{!c.handleItemIndexChange}" />
-	<aura:registerEvent name="strike_evt_chevron" type="c:strike_evt" />
 
 	<!-- PUBLIC METHODS -->
 	<aura:method name="next" action="{!c.moveToNextStep}" />
